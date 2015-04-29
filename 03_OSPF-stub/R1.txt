@@ -1,0 +1,31 @@
+hostname R1
+
+line console 0
+    logging synchronous 
+exit
+
+interface Serial0/0
+    ip address 3.0.0.1 255.0.0.0
+    clock rate 64000
+    no shutdown
+exit
+
+
+interface loopback 1
+    ip address 1.0.0.1 255.0.0.0
+    no shutdown
+exit
+
+interface loopback 2
+    ip address 2.0.0.1 255.0.0.0
+    no shutdown
+exit
+
+router eigrp 100
+    no auto-summary
+    network 3.0.0.0 0.255.255.255
+    network 2.0.0.0 0.255.255.255 
+    network 1.0.0.0 0.255.255.255  
+exit
+
+
