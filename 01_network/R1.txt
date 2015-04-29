@@ -1,0 +1,64 @@
+hostname R1
+
+line console 0
+    logging synchronous 
+exit
+
+interface Serial0/0
+    ip address 10.100.0.1 255.255.255.252
+    clock rate 64000
+    no shutdown
+exit
+
+interface Serial0/1
+    ip address 10.100.0.5 255.255.255.252
+    clock rate 64000
+    no shutdown
+exit
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! VLAN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+interface FastEthernet0/0.10
+    encapsulation dot1q 10
+    ip address 10.10.0.1 255.255.0.0
+exit
+
+interface FastEthernet0/0.20
+    encapsulation dot1q 20
+    ip address 10.20.0.1 255.255.0.0
+exit
+
+interface FastEthernet0/0
+    no shutdown
+exit
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! EIGRP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+router eigrp 10
+    no auto-summary
+    network 10.100.0.0  0.0.0.3
+    network 10.100.0.4  0.0.0.3
+    network 10.10.0.0   0.0.255.255
+    network 10.20.0.0   0.0.255.255
+exit
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DHCP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+service dhcp
+
+ip dhcp pool DHCPPOOLVLAN10
+   network        10.10.0.0/16
+   default-router 10.10.0.1
+exit
+
+ip dhcp pool DHCPPOOLVLAN20
+   network        10.20.0.0/16
+   default-router 10.20.0.1
+exit
+

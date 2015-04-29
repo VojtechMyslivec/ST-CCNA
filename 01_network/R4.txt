@@ -1,0 +1,11 @@
+hostname R4
+
+line console 0
+    logging synchronous 
+exit
+
+interface FastEthernet0/0
+    ip address 1.2.3.5 255.0.0.0
+    no shutdown
+exit
+

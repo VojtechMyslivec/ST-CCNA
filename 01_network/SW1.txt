@@ -1,0 +1,20 @@
+hostname SW1
+
+line console 0
+    logging synchronous 
+exit
+
+interface FastEthernet0/1
+    switchport mode trunk
+exit
+
+interface range FastEthernet0/10-15
+   switchport mode access
+   switchport access vlan 10
+exit
+
+interface range FastEthernet0/16-20
+   switchport mode access
+   switchport access vlan 20
+exit
+
