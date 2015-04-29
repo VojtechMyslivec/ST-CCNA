@@ -1,0 +1,65 @@
+hostname R3
+
+line console 0
+    logging synchronous 
+exit
+
+interface Serial0/0/1
+    ip address 4.0.0.2 255.0.0.0
+    clock rate 64000
+    no shutdown
+exit
+
+interface Serial0/0/0
+    ip address 5.0.0.1 255.0.0.0
+    clock rate 64000
+    no shutdown
+exit
+
+router ospf 42
+    network 5.0.0.0 0.255.255.255 area 0
+    network 4.0.0.0 0.255.255.255 area 2
+exit
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! STUB !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+router ospf 42
+    area 2 stub
+exit
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! TOTALLY STUBBED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+router ospf 42
+    no area 2 stub
+    area 2 stub no-summary
+exit
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! NOT SO STUBBY AREA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+router ospf 42
+    no area 2 stub no-summary
+    area 2 nssa
+exit
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! NOT SO STUBBY TOTALY STUBBED !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+router ospf 42
+    no area 2 nssa
+    area 2 nssa no-summary
+exit
+
+
+
+
